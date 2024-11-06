@@ -112,4 +112,4 @@ pip install PyQt6
 pip install opencv-contrib-python
 
 #어플리케이션 실행
-python python vision_agent\SpecialEffect.py
+python vision_agent\SpecialEffect.py
