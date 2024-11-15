@@ -1,59 +1,6 @@
 # 24-2 컴퓨터 비전 과제
-## 1. TrafficWeak - 교통약자 보호 어플리케이션
 
-## 개발 목적
-TrafficWeak는 교통약자를 보호하기 위한 어플리케이션입니다. 이 프로그램은 교통 표지판을 등록하고, 도로 영상을 불러와 표지판을 인식하여 운전자가 주의해야 할 사항을 알립니다.
-
-## 구체적 구현 내용
-- **표지판 등록:** 어린이, 노인, 장애인 표지판 모델을 등록합니다. 예를 들어, 표지판 이미지 파일을 불러와 저장하는 코드는 다음과 같습니다.
-  ```python
-  self.signFiles = [['vision_agent\\.venv\\child.png', '어린이'], ['vision_agent\\.venv\\elder.png', '노인'], ['vision_agent\\.venv\\disabled.png', '장애인']]
-  ```
-- **도로 영상 불러오기**
-    ```python
-    fname = QFileDialog.getOpenFileName(self, '파일 읽기', './')
-    ```
-- **표지판 인식**
-    ```python
-        sift = cv.SIFT_create() 
-
-        KD = []  
-        for img in self.signImgs:
-            gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)  
-            KD.append(sift.detectAndCompute(gray, None))  
-    
-        grayRoad = cv.cvtColor(self.roadImg, cv.COLOR_BGR2GRAY)  
-        road_kp, road_des = sift.detectAndCompute(grayRoad, None)  
-    ```    
-- **결과 표시**
-    ```python
-    self.label.setText(self.signFiles[best][1] + ' 보호구역입니다. 30km로 서행하세요.')
-    ```
-
-## 개발 환경
-- **python 3.10**
-- **필요한 라이브러리**
-    -OpenCV
-    -Numpy
-    -PyQt6
-
-## 터미널 명령어
-다음 명령어를 사용하여 개발 환경을 설정하고 어플리케이션을 실행할 수 있습니다.
-```bash
-# 가상환경 생성
-python -m venv ./.venv
-# 가상환경 활성화
-.venv\Scripts\Activate.ps1
-#필요한 라이브러리 설치
-pip install opencv-python
-pip install numpy
-pip install PyQt6
-
-#어플리케이션 실행
-python vision_agent\TrafficWeak.py
-```
-
-# Panorama 영상 어플리케이션
+# 1. Panorama 영상 어플리케이션
 
 ## 개발 목적
 Panorama는 카메라를 통해 여러 장의 이미지를 수집하고 이를 자동으로 합성하여 파노라마 영상을 만드는 어플리케이션입니다. 사용자는 이미지를 수집하고, 이를 합성하여 하나의 파노라마 영상으로 만들 수 있습니다.
@@ -115,3 +62,56 @@ Panorama는 카메라를 통해 여러 장의 이미지를 수집하고 이를 �
 python -m venv ./.venv
 # 가상환경 활성화 (Windows)
 .venv\Scripts\Activate.ps1
+#어플리케이션 실행
+python vision_agent\Panorama.py
+```
+
+## 2. SpecialEffect 사진 특수 효과 어플리케이션
+
+## 개발 목적
+SpecialEffect는 사용자가 사진을 선택한 후, 다양한 필터 효과를 적용할 수 있는 어플리케이션입니다. 엠보싱, 카툰, 연필 스케치, 유화 등의 효과를 제공하여 사용자에게 창의적인 사진 편집 기능을 제공합니다.
+
+## 구체적 구현 내용
+- **사진 읽기:** 사용자가 원하는 사진 파일을 선택하고 불러옵니다.
+  ```python
+  self.img = cv2.imread(fname[0])  # 이미지 파일 읽기
+  ```
+- **엠보싱 효과** 사진에 엠보싱 필터를 적용하여 사진을 독특한 질감으로 변환합니다.
+    ```python
+    self.emboss = np.uint8(np.clip(cv2.filter2D(gray16, -1, femboss) + 128, 0, 255))  # 엠보싱 필터
+    ```
+- **카툰 효과** 사진을 카툰 스타일로 변환하여 독특한 분위기를 연출합니다.
+    ```python
+       self.cartoon = cv2.stylization(self.img, sigma_s=60, sigma_r=0.45)  # 카툰 효과
+    ```    
+- **유화 효과**
+    ```python
+   self.oil = cv2.xphoto.oilPainting(self.img, 10, 1, cv2.COLOR_BGR2Lab)  # 유화 효과
+    ```
+- **파일 저장**
+    ```python
+    cv2.imwrite(fname[0], self.cartoon)  # 사진 저장
+    ```
+
+## 개발 환경
+- **python 3.10**
+- **필요한 라이브러리**
+    -OpenCV
+    -Numpy
+    -PyQt6
+
+## 터미널 명령어
+다음 명령어를 사용하여 개발 환경을 설정하고 어플리케이션을 실행할 수 있습니다.
+```bash
+# 가상환경 생성
+python -m venv ./.venv
+# 가상환경 활성화
+.venv\Scripts\Activate.ps1
+#필요한 라이브러리 설치
+pip install opencv-python = 2.1.3
+pip install numpy = 2.1.3 
+pip install PyQt6 = 6.7.1
+pip install pyinstaller = 6.11.0
+#어플리케이션 실행
+python vision_agent\SpecialEffect.py
+```
