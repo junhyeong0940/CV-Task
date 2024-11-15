@@ -1,0 +1,15 @@
+[project]
+name = "Vision_Agent_SpecialEffect"
+version = "0.1.0"
+authors=["Jun Hyeong - Hwang", email: "junhyeonghwang0940@gmail.com"]
+requires-python = ">=3.10
+
+[project.dependencies]
+numpy = " 2.1.3"
+opencv-python = "4.10.0.84"
+opencv-contrib-python "4.10.0.84"
+PyQt6 "6.7.1"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
